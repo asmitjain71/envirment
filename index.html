@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Solar Power</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bg: '#1b1a17',
+                        dune: '#f0e8d0',
+                        nebula: '#093c83',
+                        stardust: '#f8f3e6',
+                        borderwhite: 'rgba(255, 255, 255, 0.2)',
+                    },
+                    fontFamily: {
+                        spacemono: ['Spacemono', 'monospace'],
+                        mdnichrome: ['Mdnichrome', 'sans-serif'],
+                    },
+                    maxWidth: {
+                        'container': '1128px',
+                    },
+                    animation: {
+                        scroll: 'scroll 30s linear infinite',
+                    },
+                    keyframes: {
+                        scroll: {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(-100%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @font-face {
+            font-family: 'Spacemono';
+            src: url('https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/66b06ee671240afb261fc237_SpaceMono-Regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Mdnichrome';
+            src: url('https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/66b97e66389bffc681b10675_MDNichrome-Regular.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        body {
+            background-color: #1b1a17;
+            color: #f0e8d0;
+            font-family: 'Spacemono', monospace;
+        }
+
+        .vertical-text {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotate(180deg);
+        }
+
+        /* Custom Scrollbar for horizontal sections */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Border Cap Utils */
+        .border-cap-tl {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 24px;
+            height: 24px;
+            border-top: 1px dotted rgba(240, 232, 208, 0.2);
+            border-left: 1px dotted rgba(240, 232, 208, 0.2);
+        }
+
+        .border-cap-tr {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 24px;
+            height: 24px;
+            border-top: 1px dotted rgba(240, 232, 208, 0.2);
+            border-right: 1px dotted rgba(240, 232, 208, 0.2);
+        }
+
+        .border-cap-bl {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 24px;
+            height: 24px;
+            border-bottom: 1px dotted rgba(240, 232, 208, 0.2);
+            border-left: 1px dotted rgba(240, 232, 208, 0.2);
+        }
+
+        .border-cap-br {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 24px;
+            height: 24px;
+            border-bottom: 1px dotted rgba(240, 232, 208, 0.2);
+            border-right: 1px dotted rgba(240, 232, 208, 0.2);
+        }
+
+        .dotted-border {
+            border: 1px dotted rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+
+<body class="flex min-h-screen flex-col md:flex-row">
+
+    <!-- Book Spine (Sidebar) -->
+    <div
+        class="hidden md:flex fixed left-0 top-0 bottom-0 w-[80px] bg-black border-r border-gray-800 z-50 flex-col justify-end pb-10 items-center">
+        <div class="vertical-text text-stardust text-sm whitespace-nowrap opacity-80 tracking-wide">
+            Designed and built in the USA
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="ml-0 md:ml-[80px] w-full flex flex-col">
+
+        <!-- Navbar -->
+        <div
+            class="sticky top-0 z-40 bg-black h-auto md:h-[120px] py-4 md:py-0 flex flex-col md:flex-row items-center px-6 md:px-10 border-b border-gray-900 justify-between">
+            <div class="flex-1 w-full md:w-auto flex justify-between items-center">
+                <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/66ac3b8776773dea6671f841_logo.svg"
+                    alt="Aetherflux" class="h-6 md:h-8">
+                <!-- Mobile Menu Button (Mock) -->
+                <div class="md:hidden text-white uppercase text-xs border border-white/20 px-2 py-1">Menu</div>
+            </div>
+
+            <div class="hidden md:block absolute left-1/2 transform -translate-x-1/2 top-0">
+                <div class="bg-nebula text-white text-[10px] px-3 py-1 uppercase tracking-widest font-spacemono"
+                    id="current-date">
+                    JANUARY 2026
+                </div>
+            </div>
+
+            <nav class="hidden md:flex space-x-8 text-sm font-spacemono text-white">
+                <a href="#about" class="hover:opacity-70 transition-opacity">About</a>
+                <a href="#applications" class="hover:opacity-70 transition-opacity">Applications</a>
+                <a href="#team" class="hover:opacity-70 transition-opacity">Team</a>
+                <a href="#careers" class="hover:opacity-70 transition-opacity">Careers</a>
+                <a href="http://medium.com/@aetherflux" target="_blank"
+                    class="hover:opacity-70 transition-opacity flex items-center">
+                    Blog
+                    <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/66adc4f730c86bb33b0f098c_arrow.svg"
+                        class="ml-1 w-3 h-3" alt="arrow">
+                </a>
+                <a href="mailto:contact@aetherflux.com" class="hover:opacity-70 transition-opacity flex items-center">
+                    Contact Us
+                    <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/66adc4f730c86bb33b0f098c_arrow.svg"
+                        class="ml-1 w-3 h-3" alt="arrow">
+                </a>
+            </nav>
+        </div>
+
+        <!-- Hero Section -->
+        <div class="relative h-[60vh] md:h-[calc(100vh-120px)] w-full overflow-hidden bg-bg">
+            <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover">
+                <source
+                    src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b%2F67e8ed36e5f540f75b450f4a_Aetherflux%20Satellite_1-transcode.mp4"
+                    type="video/mp4">
+            </video>
+
+            <!-- Hero Overlay -->
+            <div class="absolute bottom-10 left-6 md:bottom-16 md:left-20 z-10">
+                <h1 class="font-mdnichrome text-[48px] md:text-[100px] leading-[1.1] text-white">
+                    Power. Compute.<br>Connect.
+                </h1>
+            </div>
+
+            <!-- Video Control (Static Mock) -->
+            <div
+                class="hidden md:flex absolute bottom-4 right-4 items-center bg-[rgba(240,232,208,0.1)] border border-[rgba(240,232,208,0.2)] rounded-full px-4 py-2 space-x-3 cursor-pointer hover:bg-black transition">
+                <div class="flex items-center space-x-1">
+                    <div class="w-2.5 h-2.5 rounded-full bg-[#fbde89]"></div>
+                    <span class="text-[10px]">2:14</span>
+                </div>
+                <span class="text-sm">Play video</span>
+                <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/67eb089947eb7b375dbe8036_Exclude.svg"
+                    class="w-4 h-4" alt="">
+            </div>
+        </div>
+
+        <!-- Featured In (Marquee) -->
+        <div
+            class="h-[72px] bg-bg flex items-center border-b border-dotted border-gray-700 px-6 md:px-20 overflow-hidden relative">
+            <div class="text-dune font-spacemono text-sm uppercase mr-10 whitespace-nowrap hidden md:block">Featured In:
+            </div>
+
+            <div class="flex space-x-16 items-center animate-scroll whitespace-nowrap opacity-60">
+                <!-- Logos repeated for scrolling effect -->
+                <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/673ff1f856a8fb4108370374_logo_ars_technica.svg"
+                    class="h-8 md:h-10 w-auto">
+                <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/673e7d72489654a8f3a62b0a_logo_bloomberg.svg"
+                    class="h-4 md:h-5 w-auto">
+                <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/673e7d728507b496c9ac0988_logo_forbes.svg"
+                    class="h-4 md:h-5 w-auto">
+                <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/673ff1ffb79cec46fd3b9752_logo_payload.svg"
+                    class="h-4 md:h-5 w-auto">
+                <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/673e7d721f4a3462404cd356_logo_space_news.svg"
+                    class="h-3 md:h-4 w-auto">
+                <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/673e7d722c3d6fa08e3292eb_logo_tech_crunch.svg"
+                    class="h-3 md:h-4 w-auto">
+                <!-- Repeat -->
+                <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/673ff1f856a8fb4108370374_logo_ars_technica.svg"
+                    class="h-8 md:h-10 w-auto">
+                <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/673e7d72489654a8f3a62b0a_logo_bloomberg.svg"
+                    class="h-4 md:h-5 w-auto">
+                <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/673e7d728507b496c9ac0988_logo_forbes.svg"
+                    class="h-4 md:h-5 w-auto">
+            </div>
+
+            <!-- Gradients for fade effect -->
+            <div
+                class="absolute left-0 md:left-[150px] top-0 bottom-0 w-20 bg-gradient-to-r from-bg to-transparent z-10">
+            </div>
+            <div class="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-bg to-transparent z-10"></div>
+        </div>
+
+        <!-- Applications Section -->
+        <div id="applications" class="bg-bg py-12 md:py-20 px-6 md:px-20 relative">
+            <div class="max-w-container mx-auto">
+                <!-- Header -->
+                <div class="flex flex-col md:flex-row justify-between items-start mb-16 md:mb-24 gap-8">
+                    <h1 class="font-mdnichrome text-[32px] md:text-[48px] leading-[1.2] text-white opacity-80 max-w-xl">
+                        An American Power Grid in Space
+                    </h1>
+                    <div class="font-spacemono text-sm md:text-base leading-relaxed text-dune opacity-80 max-w-md">
+                        Performing AI compute in orbit. Delivering power to contested environments on Earth. Aetherflux
+                        is leveraging the limitless power of the sun for novel applications that will transform the
+                        world.
+                    </div>
+                </div>
+
+                <!-- Sub-Header -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 mb-16 md:mb-20">
+                    <div class="md:col-span-5">
+                        <h2 class="font-mdnichrome text-[28px] md:text-[36px] leading-[1.2] text-white opacity-80">
+                            Bypassing Terrestrial Energy with Galactic Brain
+                        </h2>
+                    </div>
+                    <div class="md:col-span-7 font-spacemono text-sm md:text-base text-dune opacity-80 space-y-6">
+                        <p>Two years.</p>
+                        <p>That’s how much time America has left before A.I. alone consumes as much power as nearly a
+                            quarter of all U.S. households.</p>
+                        <p>Access to energy is one of the primary bottlenecks for scaling artificial intelligence. This
+                            problem is driven by infrastructure timelines. Securing real estate, establishing utility
+                            connections and constructing new data centers can take more than half a decade.</p>
+                        <p>Aetherflux is building an orbital data center satellite which leverages solar power in space
+                            to address the massive energy needs for artificial intelligence. A constellation of these
+                            satellites dubbed “Galactic Brain” working together will scale the next generation of
+                            compute workloads in orbit. <strong>The first data center node for commercial use is
+                                targeted for Q1 2027.</strong></p>
+                    </div>
+                </div>
+
+                <!-- Power Beaming -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 mb-16 md:mb-20">
+                    <div class="md:col-span-5">
+                        <h2 class="font-mdnichrome text-[28px] md:text-[36px] leading-[1.2] text-white opacity-80">
+                            Power Beaming
+                        </h2>
+                    </div>
+                    <div class="md:col-span-7 font-spacemono text-sm md:text-base text-dune opacity-80 space-y-6">
+                        <p>Space solar power can revolutionize energy distribution, especially where traditional power
+                            delivery falls short. It can avoid damaged, vulnerable, or nonexistent power infrastructure,
+                            and overcome complex and costly supply chains.</p>
+                        <p>Aetherflux’s approach uses many small satellites to transmit power through infrared lasers,
+                            allowing high power density and small ground stations. We will deliver power to where it is
+                            needed most.</p>
+                    </div>
+                </div>
+
+                <!-- Stats Grid & Lottie -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-20">
+                    <div
+                        class="backdrop-blur-sm bg-[rgba(0,0,0,0.3)] dotted-border rounded p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                        <h2 class="font-mdnichrome text-[40px] md:text-[48px] text-white tracking-wider">$16 billion
+                        </h2>
+                        <p class="font-spacemono text-dune text-sm max-w-[200px]">The U.S. Department of Defense spent
+                            $16 billion on energy in 2023</p>
+                    </div>
+                    <div
+                        class="backdrop-blur-sm bg-[rgba(0,0,0,0.3)] dotted-border rounded p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                        <h2 class="font-mdnichrome text-[40px] md:text-[48px] text-white tracking-wider">3,000</h2>
+                        <p class="font-spacemono text-dune text-sm max-w-[200px]">Over 3,000 U.S. military members or
+                            contractors were killed in fuel supply convoys in Iraq and Afghanistan in ‘03-’07</p>
+                    </div>
+                </div>
+
+                <!-- Lottie Orbit Animation (Placeholder position) -->
+                <div class="w-full h-[300px] md:h-[600px] relative overflow-hidden my-20">
+                    <lottie-player
+                        src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/67d712d7badd24654a253b3b_orbit.lottie"
+                        background="transparent" speed="1" style="width: 100%; height: 100%; transform: scale(1.2);"
+                        loop autoplay></lottie-player>
+                </div>
+
+                <!-- Use Cases Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6">
+                    <div class="flex flex-col gap-6">
+                        <div class="border border-white/20 p-1">
+                            <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/67e2aa57d65d88478b1203a6_military_stock.jpg"
+                                alt="Military" class="w-full opacity-60 hover:opacity-100 transition duration-500">
+                        </div>
+                        <h3 class="font-mdnichrome text-[24px] md:text-[28px] text-white">U.S. Military</h3>
+                        <p class="font-spacemono text-dune opacity-80 text-sm">Provide energy to U.S. military
+                            operations, day or night, even in contested locations. This can modernize our military,
+                            reduce dependencies on local grids, save taxpayer money, and protect military assets and
+                            warfighters.</p>
+                    </div>
+                    <div class="flex flex-col gap-6">
+                        <div class="border border-white/20 p-1">
+                            <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/67e2aa57874c20e80e763ff4_disaster_stock.jpg"
+                                alt="Disaster" class="w-full opacity-60 hover:opacity-100 transition duration-500">
+                        </div>
+                        <h3 class="font-mdnichrome text-[24px] md:text-[28px] text-white">Disaster Relief</h3>
+                        <p class="font-spacemono text-dune opacity-80 text-sm">Provide power to regions impacted by
+                            natural disasters when traditional infrastructure fails. This can provide energy resilience
+                            for hospitals, emergency responders, and communication networks, helping communities recover
+                            faster.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- About Section -->
+        <div id="about" class="bg-bg py-16 md:py-20 px-6 md:px-20 relative border-t dotted-border border-gray-700">
+            <div class="max-w-container mx-auto flex flex-col md:flex-row justify-between gap-12 md:gap-20">
+                <div class="w-full md:w-1/2">
+                    <h1
+                        class="font-mdnichrome text-[32px] md:text-[48px] leading-[1.2] text-white opacity-80 mb-6 md:mb-8">
+                        About Aetherflux</h1>
+                    <p class="font-spacemono text-sm md:text-base text-dune opacity-80">
+                        Aetherflux is building an American power grid in space, with initial applications to perform AI
+                        compute in orbit and to deliver power to contested environments on Earth. By developing advanced
+                        space systems to take advantage of the sun in lower earth orbit, Aetherflux is accelerating the
+                        future of AI and enabling a new era of energy abundance for Earth and beyond.
+                    </p>
+                </div>
+                <div class="w-full md:w-1/2 flex flex-col gap-8 md:gap-10">
+                    <p class="font-mdnichrome text-[24px] md:text-[28px] leading-[1.2] text-white opacity-80">
+                        Securing America’s Power and Compute Advantage
+                    </p>
+                    <p class="font-spacemono text-sm md:text-base text-dune opacity-80">
+                        Aetherflux is building the orbital power and compute grid—delivering continuous space-solar
+                        energy and GPU-class compute capacity that bypasses Earth’s constrained infrastructure. Built
+                        for frontier AI, national defense, and mission-critical operations where the U.S. must lead.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Investors Section -->
+        <div class="bg-bg py-16 md:py-20 px-6 md:px-20">
+            <div class="max-w-container mx-auto">
+                <h2 class="font-mdnichrome text-[28px] md:text-[36px] text-white mb-10 tracking-wider">Backed by
+                    world-class investors</h2>
+
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <!-- Investor 1 -->
+                    <div
+                        class="relative min-h-[120px] md:min-h-[150px] flex items-center justify-center p-4 md:p-8 group">
+                        <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/67e9b19bae3106f9d4397998_andreessen-horowitz.svg"
+                            class="max-w-[120px] md:max-w-[160px] opacity-80 group-hover:opacity-100 transition">
+                        <div class="border-cap-tl"></div>
+                        <div class="border-cap-tr"></div>
+                        <div class="border-cap-bl"></div>
+                        <div class="border-cap-br"></div>
+                    </div>
+                    <!-- Investor 2 -->
+                    <div
+                        class="relative min-h-[120px] md:min-h-[150px] flex items-center justify-center p-4 md:p-8 group">
+                        <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/67e9b19b440d1e8e05951c99_BE_Ventures_RGB_Horizontal_White%201.svg"
+                            class="max-w-[90px] md:max-w-[120px] opacity-80 group-hover:opacity-100 transition">
+                        <div class="border-cap-tl"></div>
+                        <div class="border-cap-tr"></div>
+                        <div class="border-cap-bl"></div>
+                        <div class="border-cap-br"></div>
+                    </div>
+                    <!-- Investor 3 -->
+                    <div
+                        class="relative min-h-[120px] md:min-h-[150px] flex items-center justify-center p-4 md:p-8 group">
+                        <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/67e9b19bcb5c87586b0ddc85_index.svg"
+                            class="max-w-[120px] md:max-w-[160px] opacity-80 group-hover:opacity-100 transition">
+                        <div class="border-cap-tl"></div>
+                        <div class="border-cap-tr"></div>
+                        <div class="border-cap-bl"></div>
+                        <div class="border-cap-br"></div>
+                    </div>
+                    <!-- Investor 4 -->
+                    <div
+                        class="relative min-h-[120px] md:min-h-[150px] flex items-center justify-center p-4 md:p-8 group">
+                        <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/67e9b1a1528c3b1646d32007_Group%208864.svg"
+                            class="max-w-[120px] md:max-w-[160px] opacity-80 group-hover:opacity-100 transition">
+                        <div class="border-cap-tl"></div>
+                        <div class="border-cap-tr"></div>
+                        <div class="border-cap-bl"></div>
+                        <div class="border-cap-br"></div>
+                    </div>
+                    <!-- Investor 5 -->
+                    <div
+                        class="relative min-h-[120px] md:min-h-[150px] flex items-center justify-center p-4 md:p-8 group">
+                        <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/67e9b19bf7941818f91b143d_nea.svg"
+                            class="max-w-[90px] md:max-w-[110px] opacity-80 group-hover:opacity-100 transition">
+                        <div class="border-cap-tl"></div>
+                        <div class="border-cap-tr"></div>
+                        <div class="border-cap-bl"></div>
+                        <div class="border-cap-br"></div>
+                    </div>
+                    <!-- Investor 6 -->
+                    <div
+                        class="relative min-h-[120px] md:min-h-[150px] flex items-center justify-center p-4 md:p-8 group">
+                        <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/693600ea8837d0faa2199790_construct_capital.svg"
+                            class="max-w-[120px] md:max-w-[160px] opacity-80 group-hover:opacity-100 transition">
+                        <div class="border-cap-tl"></div>
+                        <div class="border-cap-tr"></div>
+                        <div class="border-cap-bl"></div>
+                        <div class="border-cap-br"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Team Section -->
+        <div id="team" class="bg-bg py-16 md:py-20 px-6 md:px-20">
+            <div class="max-w-container mx-auto">
+                <h2
+                    class="font-mdnichrome text-[32px] md:text-[48px] text-white opacity-80 mb-12 md:mb-16 tracking-wide max-w-4xl mx-auto text-center md:text-left">
+                    Building a team of exceptional engineers, scientists, and researchers
+                </h2>
+
+                <!-- Baiju Profile -->
+                <div class="flex flex-col md:flex-row gap-8 md:gap-16 items-start mb-16 md:mb-24">
+                    <div class="w-full md:w-1/2">
+                        <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/67e2aa5654e67cd9f74011a3_baiju_headshot.jpg"
+                            class="w-full opacity-80 border border-white/20">
+                    </div>
+                    <div class="w-full md:w-1/2">
+                        <h3 class="font-mdnichrome text-[24px] md:text-[28px] text-white mb-6">Baiju Bhatt, Founder and
+                            CEO</h3>
+                        <div class="font-spacemono text-dune opacity-80 text-sm md:text-base space-y-6">
+                            <p>Baiju’s lifelong passion for space began in childhood, inspired by his father's work as a
+                                research scientist at Langley Research Center with NASA.</p>
+                            <p>At Stanford, he earned his B.S. in Physics and M.S. in Mathematics. He later co-founded
+                                Robinhood and served as co-CEO until November 2020. Today, Robinhood is a
+                                publicly-traded company with more than 20 million customers. In 2024, Baiju left his
+                                day-to-day role at Robinhood to focus on Aetherflux. He continues to serve on
+                                Robinhood’s Board of Directors.</p>
+                        </div>
+                        <div class="mt-6">
+                            <a href="https://x.com/baijubhatt" target="_blank"
+                                class="inline-block w-8 h-8 bg-nebula rounded-full relative group overflow-hidden">
+                                <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/66c66c6556538ec8c7f00780_x-white.svg"
+                                    class="absolute inset-0 m-auto w-4 h-4 z-10">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Text -->
+                <div class="flex flex-col md:flex-row gap-8 md:gap-16 items-center mb-12 md:mb-20">
+                    <h3 class="w-full md:w-1/2 font-mdnichrome text-[28px] md:text-[36px] text-white opacity-80">This is
+                        an ambitious mission that demands extraordinary talent</h3>
+                    <p class="w-full md:w-1/2 font-spacemono text-sm md:text-base text-dune opacity-80">Our team has
+                        worked at Robinhood, SpaceX, NASA/JPL, Anduril, and the U.S. Navy. Based out of San Carlos, CA
+                        and Washington D.C., we’re passionate about solving complex technical problems and strengthening
+                        America's energy independence and national security.</p>
+                </div>
+
+                <!-- Locations Images -->
+                <div class="flex flex-col md:flex-row gap-6 justify-center">
+                    <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/67e0ed85377198569b9f8577_CA%202.png"
+                        class="w-full md:w-[264px] h-auto md:h-[360px] opacity-60 border border-white/20 object-cover">
+                    <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/67e0ee36ffbf42a0254c263e_WA.png"
+                        class="w-full md:w-[264px] h-auto md:h-[360px] opacity-60 border border-white/20 object-cover">
+                </div>
+
+                <div class="flex flex-col md:flex-row gap-8 md:gap-16 items-center mt-12 md:mt-20">
+                    <h3 class="w-full md:w-1/2 font-mdnichrome text-[28px] md:text-[36px] text-white opacity-80">Help us
+                        deliver power to planet Earth</h3>
+                    <p class="w-full md:w-1/2 font-spacemono text-sm md:text-base text-dune opacity-80">By joining our
+                        team, you can help make energy more accessible, establish energy independence, support disaster
+                        relief efforts, and protect our warfighters.</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Careers (Placeholder) -->
+        <div id="careers" class="bg-bg py-16 md:py-20 px-6 md:px-20 text-center">
+            <h2 class="font-mdnichrome text-[28px] md:text-3xl text-white mb-10">Open Positions</h2>
+            <div class="border dotted-border p-10 font-spacemono text-dune">
+                (Ashby Embed Placeholder - Loading...)
+            </div>
+        </div>
+
+        <!-- Subscribe / Footer Section -->
+        <div id="links"
+            class="relative bg-black min-h-[500px] md:min-h-[600px] flex flex-col md:flex-row overflow-hidden">
+            <!-- Background Elements -->
+            <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/66ad6396257276473450ebbc_stars.svg"
+                class="absolute inset-0 w-full h-full object-cover opacity-50">
+            <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/66b917a64126ee57e20c35e8_earth-cropped.png"
+                class="absolute bottom-0 w-full max-h-[300px] md:max-h-[450px] object-cover z-0">
+
+            <div class="relative z-10 w-full flex flex-col md:flex-row">
+                <!-- Stay in the loop -->
+                <div class="flex-1 flex items-center justify-center p-10 md:p-20">
+                    <h2 class="font-mdnichrome text-[32px] md:text-[40px] text-white opacity-80">Stay in the loop</h2>
+                </div>
+
+                <!-- Form -->
+                <div class="flex-1 flex flex-col justify-center p-10 md:p-20">
+                    <p class="font-spacemono text-dune mb-10">Sign up to learn about upcoming news and progress.</p>
+
+                    <div class="flex max-w-md border-b border-white pb-2">
+                        <input type="email" placeholder="Add your email"
+                            class="bg-transparent text-white font-spacemono w-full outline-none placeholder-white/70 text-sm">
+                        <button
+                            class="bg-nebula text-white font-spacemono px-4 md:px-6 py-2 uppercase hover:bg-opacity-80 transition text-sm">Subscribe</button>
+                    </div>
+
+                    <div class="flex gap-4 mt-10">
+                        <a href="https://x.com/aetherfluxusa"
+                            class="w-8 h-8 bg-nebula rounded-full relative flex items-center justify-center group"><img
+                                src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/66c66c6556538ec8c7f00780_x-white.svg"
+                                class="w-4 h-4"></a>
+                        <a href="https://www.linkedin.com/company/aetherflux"
+                            class="w-8 h-8 bg-nebula rounded-full relative flex items-center justify-center group"><img
+                                src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/66c69e6279c6f1612bc5394a_linkedin-white.svg"
+                                class="w-4 h-4"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="bg-black py-10 px-6 md:px-20 border-t border-gray-900 relative z-20">
+            <div class="flex flex-col md:flex-row justify-between items-start gap-10">
+                <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/66b19239dc70d097178044e5_logo-large.svg"
+                    class="h-8 opacity-60">
+
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-8 md:gap-10 font-spacemono text-sm text-white">
+                    <div class="flex flex-col gap-4">
+                        <a href="#" class="hover:text-blue-400 flex items-center">Blog <img
+                                src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/66adc4f730c86bb33b0f098c_arrow.svg"
+                                class="ml-2 w-3"></a>
+                        <a href="#" class="hover:text-blue-400 flex items-center">Careers <img
+                                src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/66adc4f730c86bb33b0f098c_arrow.svg"
+                                class="ml-2 w-3"></a>
+                    </div>
+                    <div class="flex flex-col gap-4">
+                        <a href="#" class="hover:text-blue-400 flex items-center">Media requests <img
+                                src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/66adc4f730c86bb33b0f098c_arrow.svg"
+                                class="ml-2 w-3"></a>
+                        <a href="#" class="hover:text-blue-400 flex items-center">Media kit <img
+                                src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/66adc4f730c86bb33b0f098c_arrow.svg"
+                                class="ml-2 w-3"></a>
+                    </div>
+                    <div class="flex flex-col gap-4">
+                        <a href="#" class="hover:text-blue-400 flex items-center">Contact us <img
+                                src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/66adc4f730c86bb33b0f098c_arrow.svg"
+                                class="ml-2 w-3"></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-end mt-10 font-spacemono text-xs text-dune opacity-60 gap-4">
+                <span>AETHERFLUX© 2025</span>
+                <span class="hidden md:inline">•</span>
+                <a href="#">Terms & Conditions</a>
+                <span class="hidden md:inline">•</span>
+                <a href="#">Privacy</a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Update Date
+        const options = { year: 'numeric', month: 'long' };
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', options).toUpperCase();
+    </script>
+</body>
+
+</html>
