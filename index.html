@@ -204,28 +204,49 @@
         </div>
 
         <!-- Hero Section -->
-        <div class="relative h-[60vh] md:h-[calc(100vh-120px)] w-full overflow-hidden bg-bg">
-            <img src="./bgrame.png" alt="Background" class="absolute inset-0 w-full h-full object-cover">
+<div class="relative h-[60vh] md:h-[calc(100vh-120px)] w-full overflow-hidden bg-bg">
 
-            <!-- Hero Overlay -->
-            <div class="absolute bottom-10 left-6 md:bottom-16 md:left-20 z-10">
-                <h1 class="font-mdnichrome text-[48px] md:text-[100px] leading-[1.1] text-white">
-                    Raising ambitions.<br>Reducing emissions.
-                </h1>
-            </div>
+  <!-- Background Video -->
+  <video
+    id="heroVideo"
+    class="absolute inset-0 w-full h-full object-cover"
+    src="./hero.mp4"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="auto"
+  ></video>
 
-            <!-- Video Control (Static Mock) -->
-            <!-- <div
-                class="hidden md:flex absolute bottom-4 right-4 items-center bg-[rgba(240,232,208,0.1)] border border-[rgba(240,232,208,0.2)] rounded-full px-4 py-2 space-x-3 cursor-pointer hover:bg-black transition">
-                <div class="flex items-center space-x-1">
-                    <div class="w-2.5 h-2.5 rounded-full bg-[#fbde89]"></div>
-                    <span class="text-[10px]">2:14</span>
-                </div>
-                <span class="text-sm">Play video</span>
-                <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/67eb089947eb7b375dbe8036_Exclude.svg"
-                    class="w-4 h-4" alt="">
-            </div> -->
-        </div>
+  <!-- Dark overlay -->
+  <div class="absolute inset-0 bg-black/40"></div>
+
+  <!-- Hero Text -->
+  <div class="absolute bottom-10 left-6 md:bottom-16 md:left-20 z-10">
+    <h1 class="font-mdnichrome text-[48px] md:text-[100px] leading-[1.1] text-white">
+      Raising ambitions.<br>Reducing emissions.
+    </h1>
+  </div>
+
+  <!-- (Optional) Video Control – now this will work -->
+  <!--
+  <div
+    class="hidden md:flex absolute bottom-4 right-4 items-center
+           bg-[rgba(240,232,208,0.1)]
+           border border-[rgba(240,232,208,0.2)]
+           rounded-full px-4 py-2 space-x-3 cursor-pointer
+           hover:bg-black transition z-10">
+    <div class="flex items-center space-x-1">
+      <div class="w-2.5 h-2.5 rounded-full bg-[#fbde89]"></div>
+      <span class="text-[10px]">2:14</span>
+    </div>
+    <span class="text-sm">Play video</span>
+    <img src="https://cdn.prod.website-files.com/66ac394c2383a68b4dc6252b/67eb089947eb7b375dbe8036_Exclude.svg"
+         class="w-4 h-4" alt="">
+  </div>
+  -->
+
+</div>
 
 
 
